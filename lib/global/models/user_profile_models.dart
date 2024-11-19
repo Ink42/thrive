@@ -29,5 +29,4 @@ final String userEmail;
 final String userProfilePicture;
 
 
-
 }
