@@ -7,6 +7,7 @@ import 'package:thrive/const/constant.dart';
 import 'package:thrive/global/models/user_profile_models.dart';
 import 'package:thrive/global/widgets/bottom_navigation_bar.dart';
 import 'package:thrive/global/widgets/bottom_navigation_provider.dart';
+import 'package:thrive/heatmap.dart';
 
 void main()async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -87,7 +88,7 @@ class _HivePageState extends State<HivePage> {
  final page =[
   Center(child: Text("Home"),),
   Center(child: Text("Stats"),),
-  Center(child: Text("Map"),),
+  Center(child: MyHeatMap()),
   Center(child: Text("Settings"),),
 
   ];
