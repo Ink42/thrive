@@ -23,13 +23,16 @@ class ActivityModelsAdapter extends TypeAdapter<ActivityModels> {
       fields[3] as int,
       fields[4] as DateTime,
       (fields[5] as List).cast<dynamic>(),
+      fields[6] as String,
+      fields[8] as String,
+      fields[7] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, ActivityModels obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.activityId)
       ..writeByte(1)
@@ -41,7 +44,13 @@ class ActivityModelsAdapter extends TypeAdapter<ActivityModels> {
       ..writeByte(4)
       ..write(obj.dateTime)
       ..writeByte(5)
-      ..write(obj.route);
+      ..write(obj.route)
+      ..writeByte(6)
+      ..write(obj.title)
+      ..writeByte(7)
+      ..write(obj.complete)
+      ..writeByte(8)
+      ..write(obj.summary);
   }
 
   @override

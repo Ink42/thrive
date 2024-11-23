@@ -3,17 +3,22 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:thrive/challenge/view/challenge_view.dart';
+import 'package:thrive/challenge/view/map_view.dart';
+import 'package:thrive/challenge/view/set_event_view.dart';
 import 'package:thrive/const/constant.dart';
+import 'package:thrive/global/models/activity_models.dart';
 import 'package:thrive/global/models/user_profile_models.dart';
 import 'package:thrive/global/widgets/bottom_navigation_bar.dart';
 import 'package:thrive/global/widgets/bottom_navigation_provider.dart';
-import 'package:thrive/heatmap.dart';
 
 void main()async {
     WidgetsFlutterBinding.ensureInitialized();
     await Hive.initFlutter();
     Hive.registerAdapter(UserProfileModelsAdapter());
+    Hive.registerAdapter(ActivityModelsAdapter());
     await Hive.openBox<UserProfileModels>(test_user);
+    await Hive.openBox<ActivityModels>(test_box);
   
   runApp(
 
@@ -39,6 +44,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home:HivePage(),
+      routes: {
+        MapView.id : (_)=>MapView(),
+        SetEventView.id :(_)=> SetEventView()
+      },
     );
   }
 }
@@ -88,7 +97,7 @@ class _HivePageState extends State<HivePage> {
  final page =[
   Center(child: Text("Home"),),
   Center(child: Text("Stats"),),
-  Center(child: MyHeatMap()),
+  Center(child: ChallengeView()),
   Center(child: Text("Settings"),),
 
   ];
