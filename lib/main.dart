@@ -9,6 +9,7 @@ import 'package:thrive/challenge/view/set_event_view.dart';
 import 'package:thrive/const/constant.dart';
 import 'package:thrive/global/models/activity_models.dart';
 import 'package:thrive/global/models/user_profile_models.dart';
+import 'package:thrive/global/services/network_monitor.dart';
 import 'package:thrive/global/widgets/bottom_navigation_bar.dart';
 import 'package:thrive/global/widgets/bottom_navigation_provider.dart';
 
@@ -25,6 +26,8 @@ void main()async {
       MultiProvider(providers: 
       [
         ChangeNotifierProvider(create: (context) => BottomNavigationProvider()),
+        ChangeNotifierProvider(create: (_) => NetworkMonitor()),
+        
       ],
       child: const MyApp(),
       )

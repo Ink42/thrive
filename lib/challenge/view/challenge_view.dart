@@ -6,16 +6,13 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:thrive/challenge/widgets/challenge_options.dart';
 import 'package:thrive/challenge/widgets/display_activities.dart';
 import 'package:thrive/challenge/widgets/heatmap.dart';
-import 'package:thrive/const/constant.dart';
-import 'package:thrive/global/models/activity_models.dart';
 
 class ChallengeView extends StatelessWidget {
   const ChallengeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final box  = Hive.box<ActivityModels>(test_box);
-    log("Hive db has ${box.get(0)!.distance}");
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
