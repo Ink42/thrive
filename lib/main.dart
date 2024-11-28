@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:thrive/challenge/location_controller.dart';
 import 'package:thrive/challenge/view/challenge_view.dart';
 import 'package:thrive/challenge/view/map_view.dart';
 import 'package:thrive/challenge/view/set_event_view.dart';
+import 'package:thrive/challenge/view_model/route_view_model.dart';
 import 'package:thrive/const/constant.dart';
 import 'package:thrive/global/models/activity_models.dart';
 import 'package:thrive/global/models/user_profile_models.dart';
@@ -27,6 +29,9 @@ void main()async {
       [
         ChangeNotifierProvider(create: (context) => BottomNavigationProvider()),
         ChangeNotifierProvider(create: (_) => NetworkMonitor()),
+        ChangeNotifierProvider(create: (_) => RouteViewModel()),
+        ChangeNotifierProvider(create: (_)=>LocationController()),
+
         
       ],
       child: const MyApp(),

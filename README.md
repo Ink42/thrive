@@ -61,7 +61,8 @@ License
 
 This project is licensed under the MIT License.
   
-
+Special thanks to :
+<a href="https://www.flaticon.com/free-animated-icons/humanpictos" title="humanpictos animated icons">Humanpictos animated icons created by Freepik - Flaticon</a>
  
 
 Let's Thrive together!
