@@ -3,9 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:thrive/challenge/widgets/calender_map_widget.dart';
 import 'package:thrive/challenge/widgets/challenge_options.dart';
 import 'package:thrive/challenge/widgets/display_activities.dart';
-import 'package:thrive/challenge/widgets/heatmap.dart';
+
 
 class ChallengeView extends StatelessWidget {
   const ChallengeView({super.key});
@@ -27,7 +28,8 @@ class ChallengeView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const MyHeatMap(),
+              CalenderMapWidget(),
+              // const MyHeatMap(),
               // AlertWidget(),
               const SizedBox(height: 30),
               challengeOptions(),

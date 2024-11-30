@@ -9,6 +9,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:thrive/challenge/location_controller.dart';
 import 'package:thrive/challenge/view_model/route_view_model.dart';
+import 'package:thrive/const/constant.dart';
 import 'package:thrive/global/services/network_monitor.dart';
 
 class MapView extends StatefulWidget {
@@ -78,8 +79,8 @@ appBar: PreferredSize(
             ),
             children: [
                TileLayer(
-                          urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                        ),
+               urlTemplate: map_types["openstreetmap"]
+                     ),
               MarkerLayer(markers: [
                 const Marker(point: LatLng(-26.2297144,27.893659),
                   child: Icon(
@@ -197,26 +198,29 @@ class _BottomMapOptionsState extends State<BottomMapOptions> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    int selected_map = 3;
     return Align(
       alignment: Alignment.bottomCenter,
       child: GestureDetector(
-        onTap: () => changeMenu(),
+        onTap: () => showMoreOption? (){}:changeMenu(),
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300), // Duration of the animation
-          curve: Curves.easeInOut, // Animation curve
+          duration: const Duration(milliseconds: 300), 
+          curve: Curves.easeInOut,
           margin: showMoreOption ? EdgeInsets.all(10) : EdgeInsets.all(20),
           width: MediaQuery.of(context).size.width,
           height: showMoreOption
-              ? MediaQuery.of(context).size.height * 0.7
-              : MediaQuery.of(context).size.width * 0.12,
+              ? MediaQuery.of(context).size.height * 0.8
+              : MediaQuery.of(context).size.width * 0.15,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
             if (!showMoreOption)  Center(
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Row(
@@ -241,17 +245,191 @@ class _BottomMapOptionsState extends State<BottomMapOptions> with SingleTickerPr
                         Text("4/6", style: TextStyle(fontSize: 12)),
                       ],
                     ),
+                    Icon(Icons.more_vert_rounded)
                   ],
                 ),
             ),
-              // Animated transition for expanded content
               AnimatedCrossFade(
                 firstChild: const SizedBox.shrink(),
-                secondChild: const Padding(
-                  padding: EdgeInsets.only(top: 20.0),
-                  child: Text(
-                    "Save current location as point?",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                secondChild:  Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              onPressed: () => changeMenu(),
+                             icon: Icon(Icons.keyboard_arrow_down_rounded))
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Save current location as point?",
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                            ),
+                            IconButton(onPressed: (){}, icon: Icon(Icons.location_searching_rounded))
+                          ],
+                        ),
+                           Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Share your current location",
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                            ),
+                            IconButton(onPressed: (){}, icon: Icon(Icons.share_location_rounded))
+                          ],
+                        ),
+                      SizedBox(height: 20,),
+                      
+                            Row(
+                              children: [
+                                Text(
+                                  "Select a map",
+                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                      SizedBox(height: 20,),
+                      Container(
+                        height: 110,
+                        // color: Colors.grey,
+                        width: double.infinity,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 6,
+                          itemBuilder: (_,index){
+                            return Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                        // height: /1,
+                        width: 120,
+                        decoration: BoxDecoration(
+                              // color: Colors.blueGrey,
+                              borderRadius: BorderRadius.circular(20)
+                        
+                        ),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                                      width: 120,
+                              
+                                 decoration: BoxDecoration(
+                                color: Colors.blueGrey,
+                                borderRadius: BorderRadius.circular(12),
+                                image: DecorationImage(image: 
+                                NetworkImage("url")
+                                )
+                                                      
+                                                      ),
+                              ),
+                            ),
+                            SizedBox(height: 9,),
+                            Container(
+                               decoration: BoxDecoration(
+                               color: selected_map ==index? Colors.amber: Colors.transparent,
+
+                                borderRadius: BorderRadius.circular(20)
+                                                      
+                                                      ),
+                              height: 5,
+                              width: 48,
+                            )
+                          ],
+                        ),
+                            );
+                          }
+                          ),
+                      ),
+                      SizedBox(height: 30,),
+
+                        Column(
+                          // mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                          Row(children: [
+                            Expanded(
+                              child: Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                  Text("Duration"),
+                                  Text("20:16",
+                                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                                  ),
+                                ],),
+                              ),
+                            ),
+                            SizedBox(width: 10,),                             Expanded(
+                               child: Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                  Text("Distance"),
+                                  Text("1.8 km",
+                                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                                  ),
+                                ],),
+                                                           ),
+                             )
+                          ],),
+                          
+                         Row(children: [
+                            Expanded(
+                              child: Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                  Text("Steps"),
+                                  Text("2876",
+                                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                                  ),
+                                ],),
+                              ),
+                            ),
+                            SizedBox(width: 10,),                             Expanded(
+                               child: Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                  Text("_"),
+                                  Text("__ : __",
+                                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                                  ),
+                                ],),
+                                                           ),
+                             )
+                          ],),
+                        ],),
+                          SizedBox(height: 30,),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: MaterialButton( 
+                            // minWidth: double.infinity,
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            color: Colors.amber,
+                            onPressed: (){},
+                            child: Text("Save",
+                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: TextButton(onPressed: (){}, child: Text("Cancel")))
+
+                        ],
+                      ),
+                        
+                      ],
+                    ),
                   ),
                 ),
                 crossFadeState: showMoreOption
