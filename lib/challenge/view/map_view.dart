@@ -60,7 +60,7 @@ appBar: PreferredSize(
       children: [
         IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back_ios_new_rounded)),
         Text("Tracking activities",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-        IconButton(onPressed: (){}, icon: Icon(Icons.calendar_today_outlined)),
+        IconButton(onPressed: (){}, icon: Icon(Icons.more_vert_rounded)),
       ],
     ),
   )),
