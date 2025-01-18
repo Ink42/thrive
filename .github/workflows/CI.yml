@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Dart
+name: CI
 
 on:
   push:
@@ -17,16 +17,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
-      - name: Install dependencies
-        run: dart pub get
+      # - name: Install dependencies
+      #   run: dart pub get
 
-      - name: Analyze project source
-        run: dart analyze
+      # - name: Analyze project source
+      #   run: dart analyze
 
-      - name: Run tests
-        run: dart test
+      # - name: Run tests
+      #   run: dart test
 # FLutters turn
       - name: Set Up Java
         uses: actions/setup-java@v3.12.0
