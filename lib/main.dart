@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:thrive/challenge/location_controller.dart';
@@ -12,33 +13,27 @@ import 'package:thrive/const/constant.dart';
 import 'package:thrive/global/models/activity_models.dart';
 import 'package:thrive/global/models/user_profile_models.dart';
 import 'package:thrive/global/services/network_monitor.dart';
-import 'package:thrive/global/widgets/bottom_navigation_bar.dart';
 import 'package:thrive/global/widgets/bottom_navigation_provider.dart';
+import 'package:thrive/utils/widgets/wtile.dart';
 import 'package:thrive/home/view/home_page.dart';
 
-void main()async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Hive.initFlutter();
-    Hive.registerAdapter(UserProfileModelsAdapter());
-    Hive.registerAdapter(ActivityModelsAdapter());
-    await Hive.openBox<UserProfileModels>(test_user);
-    await Hive.openBox<ActivityModels>(test_box);
-  
-  runApp(
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserProfileModelsAdapter());
+  Hive.registerAdapter(ActivityModelsAdapter());
+  await Hive.openBox<UserProfileModels>(test_user);
+  await Hive.openBox<ActivityModels>(test_box);
 
-      MultiProvider(providers: 
-      [
-        ChangeNotifierProvider(create: (context) => BottomNavigationProvider()),
-        ChangeNotifierProvider(create: (_) => NetworkMonitor()),
-        ChangeNotifierProvider(create: (_) => RouteViewModel()),
-        ChangeNotifierProvider(create: (_)=>LocationController()),
-
-        
-      ],
-      child: const MyApp(),
-      )
-
-  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => BottomNavigationProvider()),
+      ChangeNotifierProvider(create: (_) => NetworkMonitor()),
+      ChangeNotifierProvider(create: (_) => RouteViewModel()),
+      ChangeNotifierProvider(create: (_) => LocationController()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -48,67 +43,82 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:HivePage(),
+      home: HivePage(),
       routes: {
-        MapView.id : (_)=>MapView(),
-        SetEventView.id :(_)=> SetEventView()
+        MapView.id: (_) => MapView(),
+        SetEventView.id: (_) => SetEventView()
       },
     );
   }
 }
 
-
 class HivePage extends StatefulWidget {
   HivePage({super.key});
-  // final box = Hive.box<UserProfileModels>("name");
+  // final box = Hive.box<UserProfileModels>("name"); //Break
   @override
   State<HivePage> createState() => _HivePageState();
 }
 
 class _HivePageState extends State<HivePage> {
-
   String say = "";
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // 
+    //
     if (!Hive.isBoxOpen(test_user)) Hive.openBox<UserProfileModels>(test_user);
   }
 
-  void display(String data){
+  void display(String data) {
     setState(() {
-       log(data);
-       say = data;
+      log(data);
+      say = data;
     });
   }
+
+  int currentPageIndex = 0;
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<BottomNavigationProvider>(context);
-    final userBox = Hive.box<UserProfileModels>(test_user);
-    UserProfileModels user = UserProfileModels(
-      userEmail: "example@yahoo.co", 
-      userID: "9kkds8ads)sa", 
-      userName: "Toby", 
-      userProfilePicture: "https://media.npr.org/assets/img/2017/08/29/stretch-and-bob-stevie-wonder_wide-fb64384afd53e5775957a41f6630367922f712c0.jpg"
-      );
-    
-    return Scaffold(
-      
-      bottomNavigationBar:  GlobaleBottomNavigationBar(),
-      body: page[provider.currentIndex]
-    );
-  }
- final page =[
-  HomePage(),
-  Center(child: Text("Stats"),),
-  Center(child: ChallengeView()),
-  Center(child: Text("Settings"),),
 
+    return Scaffold(
+        bottomNavigationBar: GNav(
+            onTabChange: (value) {
+              setState(() {
+                currentPageIndex = value;
+              });
+            },
+            activeColor: const Color.fromARGB(255, 113, 158, 28),
+            color: Colors.grey,
+            padding: EdgeInsets.all(10),
+            tabMargin: EdgeInsets.all(10),
+            tabs: [
+              GButton(
+                icon: Icons.home,
+                text: "home",
+                gap: 10,
+              ),
+              GButton(icon: Icons.map_rounded, text: "map", gap: 10),
+              GButton(icon: Icons.search, text: "search", gap: 10),
+              GButton(icon: Icons.settings, text: "settings", gap: 10),
+            ]),
+        // body: page[provider.currentIndex]
+        body: page[currentPageIndex]
+        // body:
+        );
+  }
+
+  final page = [
+    HomePage(),
+    Center(
+      child: Text("Map"),
+    ),
+    Center(child: ChallengeView()),
+    Center(
+      child: Text("Settings"),
+    ),
   ];
 }
-

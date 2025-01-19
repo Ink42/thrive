@@ -43,3 +43,10 @@ jobs:
        
       - name: Install Dependencies
         run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+
+      - name: Check if it builds apk
+        run: flutter build apk
