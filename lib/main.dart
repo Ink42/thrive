@@ -14,6 +14,7 @@ import 'package:thrive/global/models/activity_models.dart';
 import 'package:thrive/global/models/user_profile_models.dart';
 import 'package:thrive/global/services/network_monitor.dart';
 import 'package:thrive/global/widgets/bottom_navigation_provider.dart';
+import 'package:thrive/utils/pedometer_service.dart';
 import 'package:thrive/utils/widgets/wtile.dart';
 import 'package:thrive/home/view/home_page.dart';
 
@@ -31,6 +32,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => NetworkMonitor()),
       ChangeNotifierProvider(create: (_) => RouteViewModel()),
       ChangeNotifierProvider(create: (_) => LocationController()),
+      ChangeNotifierProvider(create: (_) => PedestrianProvider()),
     ],
     child: const MyApp(),
   ));
@@ -113,12 +115,98 @@ class _HivePageState extends State<HivePage> {
 
   final page = [
     HomePage(),
-    Center(
-      child: Text("Map"),
-    ),
+    PedometerUI(),
     Center(child: ChallengeView()),
     Center(
       child: Text("Settings"),
     ),
   ];
+}
+
+//////
+class PedometerUI extends StatefulWidget {
+  @override
+  _PedometerUIState createState() => _PedometerUIState();
+}
+
+class _PedometerUIState extends State<PedometerUI> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize PedestrianProvider
+    Future.microtask(() =>
+        Provider.of<PedestrianProvider>(context, listen: false).initialize());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<PedestrianProvider>(context);
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'Steps Taken',
+            style: TextStyle(fontSize: 30),
+          ),
+          Text(
+            provider.steps,
+            style: TextStyle(fontSize: 60),
+          ),
+          Divider(
+            height: 100,
+            thickness: 0,
+            color: Colors.white,
+          ),
+          Text(
+            'Pedestrian Status',
+            style: TextStyle(fontSize: 30),
+          ),
+          Icon(
+            provider.status == 'walking'
+                ? Icons.directions_walk
+                : provider.status == 'stopped'
+                    ? Icons.accessibility_new
+                    : Icons.error,
+            size: 100,
+          ),
+          Center(
+            child: Text(
+              provider.status,
+              style:
+                  provider.status == 'walking' || provider.status == 'stopped'
+                      ? TextStyle(fontSize: 30)
+                      : TextStyle(fontSize: 20, color: Colors.red),
+            ),
+          ),
+          Row(
+            spacing: 20,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  provider.register(true);
+                },
+                child: Text("Play"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  provider.register(false);
+                },
+                child: Text("Pause"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  provider.clearSteps();
+                },
+                child: Text("Clear"),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
 }
