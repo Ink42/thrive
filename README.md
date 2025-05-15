@@ -3,11 +3,12 @@
 Welcome to **Thrive**, the fitness app designed to inspire and empower you to achieve your goals. Whether you're running, cycling, hiking, or walking, Thrive helps you track your activities, connect with a community, and push your limits.
 
 ---
+![Project: On Hold](https://img.shields.io/badge/Project-On_Hold-333333?style=flat&color=orange)
 
 ## Planned Features
 
-- [ ] GPS-based tracking for running, cycling, walking, and hiking.  
-- [ ] Personalized Goals: Set weekly and monthly fitness targets.  
+- [x] GPS-based tracking for running, cycling, walking, and hiking.  
+- [x] Personalized Goals: Set weekly and monthly fitness targets.  
 - [ ] Live Tracking and Safety.  
 - [ ] Join events, compete on leaderboards, and cheer on friends. Limited chat features, but reactions like likes are planned.  
 - [ ] Participate in community or personal challenges.  
